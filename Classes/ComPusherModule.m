@@ -298,14 +298,15 @@ static ComPusherModule *_instance;
 	}];
 }
 
--(void)_bindEvent:(NSString*)type {
-  [pusher bindToEventNamed:type target:self action:@selector(handleNewEvent:)];
+#pragma mark - PTPusherDelegate methods
+
+-(void)pusher:(PTPusher *)p connectionDidConnect:(PTPusherConnection *)connection {
+	if(reconnectAutomaticaly)
+		pusher.reconnectAutomatically = YES;
 }
 
--(void)handleNewEvent:(PTPusherEvent *)event {
-  if([self _hasListeners:event.name]) {
-    [self fireEvent:event.name withObject:event.data];
-  }
+-(void)pusher:(PTPusher *)pusher connection:(PTPusherConnection *)connection failedWithError:(NSError *)error {
+	[self fireEvent:@"failed" withObject:nil];
 }
 
 -(void)pusher:(PTPusher *)p connection:(PTPusherConnection *)connection didDisconnectWithError:(NSError *)error {
