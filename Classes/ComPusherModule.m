@@ -86,7 +86,24 @@ static ComPusherModule *_instance;
 	PUSHER_LOG(@"[INFO] %@ loaded", self);
 }
 
-#pragma Public APIs
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context {
+	
+	if([keyPath isEqualToString:@"connection.state"]) {
+		PTPusherConnectionState old = [[change valueForKey:NSKeyValueChangeOldKey] integerValue];
+		PTPusherConnectionState new = [[change valueForKey:NSKeyValueChangeNewKey] integerValue];
+		
+		[self fireEvent:[self _stringFromState:new] withObject:nil];
+		[self fireEvent:@"status_change" withObject:@{ @"previous" : [self _stringFromState:old], @"current" : [self _stringFromState:new] }];
+	}
+	
+	if([keyPath isEqualToString:@"channel_auth_endpoint"]) {
+		NSString *endpoint = [change valueForKey:NSKeyValueChangeNewKey];
+		
+		if(pusher)
+			pusher.authorizationURL = [NSURL URLWithString:endpoint];
+	}
+}
+
 -(void)setup:(id)args {
 	enum Arguments {
 		kArgApplicationKey = 0,
