@@ -222,25 +222,80 @@ static ComPusherModule *_instance;
 - (void)handlePusherEvent:(NSNotification *)note {
   PTPusherEvent *pusher_event = [note.userInfo objectForKey:PTPusherEventUserInfoKey];
   
-  NSMutableDictionary *event = [NSMutableDictionary dictionary];
-  [event setValue:NULL_IF_NIL(pusher_event.channel) forKey:@"channel"];
-  [event setValue:NULL_IF_NIL(pusher_event.name) forKey:@"name"];
-  [event setValue:NULL_IF_NIL(pusher_event.data) forKey:@"data"];
+	[[channels valueForKey:pusher_event.channel] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+		ComPusherChannelProxy *proxy = (ComPusherChannelProxy *)obj;
+    [proxy fireEvent:@"bind_all" withObject:pusher_event.data];
+	}];
   
-  for(ComPusherChannelProxy *proxy in [channels valueForKey:pusher_event.channel]) {
-    if([proxy _hasListeners:@"event"])
-      [proxy fireEvent:@"event" withObject:event];
-  }
-  
-  if([self _hasListeners:@"event"])
-    [self fireEvent:@"event" withObject:event];
+	[self fireEvent:@"bind_all" withObject:pusher_event.data];
 }
 
-#pragma mark Listeners
--(void)_listenerAdded:(NSString *)type count:(int)count {
-  if(count == 1) {
-    [self performSelectorOnMainThread:@selector(_bindEvent:) withObject:type waitUntilDone:YES];
-  }
+-(void)bind:(id)args {
+	NSString *type = [args objectAtIndex:0];
+	KrollCallback* listener = [[args objectAtIndex:1] retain];
+	ENSURE_TYPE(listener,KrollCallback);
+	
+	TiObjectRef callbackFunction = [listener function];
+	
+	// First make sure that the binding doesn't exist already
+	NSMutableDictionary *map = [bindings objectForKey:type];
+	if(map) {
+		TiObjectRef callbackFunction = [listener function];
+		NSValue *callbackValue = [NSValue valueWithPointer:callbackFunction];
+		PTPusherEventBinding *binding = [map objectForKey:callbackValue];
+		
+		if(binding)
+			// Binding already exists, ignore!
+			return;
+	}
+	
+	PTPusherEventBinding *binding = [pusher bindToEventNamed:type handleWithBlock:^(PTPusherEvent *pusher_event) {
+		[[listener context] invokeBlockOnThread:^{
+			[listener call:@[pusher_event.data] thisObject:self];
+		}];
+	}];
+	
+	NSValue *callbackValue = [NSValue valueWithPointer:callbackFunction];
+	map = [bindings objectForKey:type];
+	if(!map)
+		map = [[[NSMutableDictionary alloc] init] autorelease];
+	
+	[map setObject:binding forKey:callbackValue];
+	[bindings setObject:map forKey:type];
+}
+
+-(void)unbind:(id)args {
+	NSString *type = [args objectAtIndex:0];
+	KrollCallback* listener = [args objectAtIndex:1];
+	ENSURE_TYPE(listener,KrollCallback);
+	
+	NSMutableDictionary *map = [bindings objectForKey:type];
+	if(map) {
+		TiObjectRef callbackFunction = [listener function];
+		NSValue *callbackValue = [NSValue valueWithPointer:callbackFunction];
+		PTPusherEventBinding *binding = [map objectForKey:callbackValue];
+		
+		if(binding) {
+			[pusher removeBinding:binding];
+			[map removeObjectForKey:callbackValue];
+			[bindings setObject:map forKey:type];
+		}
+	}
+}
+
+-(void)fireEvent:(NSString *)type withObject:(id)data {
+	NSDictionary *map = [bindings objectForKey:type];
+	[map enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
+		TiObjectRef callbackFunction = [(NSValue *)key pointerValue];
+		KrollCallback *callback = [KrollObject toID:[self.executionContext krollContext] value:callbackFunction];
+		
+		NSArray *payload = @[];
+		if(data) { payload = @[data]; }
+		
+		[[callback context] invokeBlockOnThread:^{
+			[callback call:payload thisObject:self];
+		}];
+	}];
 }
 
 -(void)_bindEvent:(NSString*)type {
