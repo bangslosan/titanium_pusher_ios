@@ -3,9 +3,17 @@
 var Pusher = require('com.pusher');
 Pusher.setup({
   key: '437c8bf5d9d5529460e9',     // CHANGEME
+Pusher.log = function(message) {
+  Ti.API.log("------------------- " + message);
+}
+Pusher.setup('437c8bf5d9d5529460e9', {
   appID: '1305',                   // CHANGEME
   secret: '0750515631c6e8300b03',  // CHANGEME
   reconnectAutomaticaly: true
+});
+
+Pusher.connection.bind('status_change', function(status) {
+  Ti.API.log("-- " + status.previous + " -- " + status.current);
 });
 
 var navigationWindow = Ti.UI.createWindow();
@@ -26,7 +34,7 @@ var handleConnected = function() {
   connect_button.enabled = false;
   add_message_button.enabled = true;
 
-  Pusher.addEventListener('connected', function(e) {
+  Pusher.bind('connected', function() {
     Ti.API.warn("PUSHER CONNECTED");
     connect_button.title = 'Disconnect';
     connect_button.enabled = true;
@@ -35,10 +43,12 @@ var handleConnected = function() {
     window.channel = Pusher.subscribeChannel('test');
 
     // Bind to all events on this channel
-    window.channel.addEventListener('event', handleEvent);
+    window.channel.bind('bind_all', handleEvent);
 
     // Bind to a specific event on this channel
-    window.channel.addEventListener('alert', handleAlertEvent);
+    window.channel.bind('alert', handleAlertEvent);
+
+    window.channel.unbind('bind_all', handleEvent);
   });
   Pusher.connect();
 };
@@ -48,39 +58,30 @@ var handleDisconnected = function() {
   add_message_button.enabled = false;
 
   if(window.channel) {
-    window.channel.removeEventListener('event', handleEvent);
-    window.channel.removeEventListener('alert', handleAlertEvent);
+    window.channel.unbind('bind_all', handleEvent);
+    window.channel.unbind('alert', handleAlertEvent);
   }
 
   Pusher.disconnect();
 }
 
-var handleEvent = function(e) {
+var handleEvent = function(data) {
   var label = Ti.UI.createLabel({
-    text: "channel:" + e.channel + " event: " + e.name,
+    text: JSON.stringify(data),
     top: 3,
     left: 10,
     height: '20',
     font: {fontSize: 20}
   });
 
-  var sublabel = Ti.UI.createLabel({
-    text: JSON.stringify(e.data),
-    top: 25,
-    left: 10,
-    height: '12',
-    font: {fontSize:12}
-  });
-
   var tableViewRow = Ti.UI.createTableViewRow({});
   tableViewRow.add(label);
-  tableViewRow.add(sublabel);
 
   tableview.appendRow(tableViewRow, {animated:true});
 };
 
-var handleAlertEvent = function(e) {
-  alert(JSON.stringify(e.data));
+var handleAlertEvent = function(data) {
+  alert(JSON.stringify(data));
 }
 
 var connect_button = Ti.UI.createButton({
