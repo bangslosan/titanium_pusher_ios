@@ -15,5 +15,8 @@ build
 *.pbxuser
 xcuserdata
 
+pusher_rails_app
+app
+
 DerivedData
 Pods

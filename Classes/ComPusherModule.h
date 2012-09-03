@@ -10,16 +10,14 @@
 #import "PTPusherAPI.h"
 #import "PTPusherDelegate.h"
 
-@interface ComPusherModule : TiModule <PTPusherDelegate> {
-  PTPusher *pusher;
-  PTPusherAPI *pusherAPI;
-  
-  NSMutableDictionary *channels;
-}
+#define PUSHER_LOG(format, args) \
+  [ComPusherModule _logMessage:[NSString stringWithFormat:format, args]];
+
+@interface ComPusherModule : TiModule <PTPusherDelegate>
 
 @property (nonatomic,readonly) PTPusher *pusher;
 @property (nonatomic,readonly) PTPusherAPI *pusherAPI;
 
--(void)unsubscribeChannel:(id)args;
++(void)_logMessage:(NSString *)args;
 
 @end
