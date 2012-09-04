@@ -11,9 +11,10 @@
 
 #import "PTPusherEvent.h"
 #import "PTPusherChannel.h"
-#import "Reachability.h"
+#import "ASI/Reachability.h"
 
 #import "ComPusherChannelProxy.h"
+#import "KrollContext.h"
 #import "KrollBridge.h"
 
 static ComPusherModule *_instance;
