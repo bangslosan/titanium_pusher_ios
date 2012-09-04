@@ -6,6 +6,9 @@ Pusher.setup({
 Pusher.log = function(message) {
   Ti.API.log("------------------- " + message);
 }
+
+Pusher.channel_auth_endpoint = "http://floating-garden-8662.herokuapp.com/presence_auth";
+
 Pusher.setup('437c8bf5d9d5529460e9', {
   appID: '1305',                   // CHANGEME
   secret: '0750515631c6e8300b03',  // CHANGEME
@@ -44,6 +47,10 @@ var handleConnected = function() {
 
     // Bind to all events on this channel
     window.channel.bind('bind_all', handleEvent);
+
+    window.channel.bind('pusher:subscription_error', function(status) {
+      Ti.API.log("SUBSCRIPTION FAILED " + status);
+    });
 
     // Bind to a specific event on this channel
     window.channel.bind('alert', handleAlertEvent);

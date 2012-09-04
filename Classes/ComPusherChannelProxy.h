@@ -14,7 +14,7 @@
 
 #import "ComPusherModule.h"
 
-@interface ComPusherChannelProxy : TiProxy {
+@interface ComPusherChannelProxy : TiProxy <PTPusherPresenceChannelDelegate> {
   ComPusherModule *pusherModule;
   
   NSString *channel;
