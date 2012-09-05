@@ -43,10 +43,24 @@ var handleConnected = function() {
     connect_button.enabled = true;
 
     // Connect to channel
-    window.channel = Pusher.subscribeChannel('test');
+    window.channel = Pusher.subscribe('presence-test');
 
     // Bind to all events on this channel
     window.channel.bind('bind_all', handleEvent);
+
+    window.channel.bind('pusher:subscription_succeeded', function() {
+      Ti.API.log("SUBSCRIPTION SUCCEEDED");
+
+      Ti.API.log("MEMBER COUNT IS " + window.channel.members.count);
+      window.channel.members.each(function(member) {
+        Ti.API.log("--------- " + JSON.stringify(member));
+      });
+
+      var member = window.channel.members.getMember("1");
+      Ti.API.log("------- MEMBER 1 IS " + JSON.stringify(member));
+
+      window.channel.trigger("TTTTTT", { foo: 'bar' });
+    });
 
     window.channel.bind('pusher:subscription_error', function(status) {
       Ti.API.log("SUBSCRIPTION FAILED " + status);

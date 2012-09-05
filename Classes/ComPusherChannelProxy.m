@@ -7,6 +7,7 @@
 //
 
 #import "ComPusherChannelProxy.h"
+#import "ComPusherChannelMembersProxy.h"
 
 #import "TiUtils.h"
 
@@ -14,6 +15,7 @@
   [channel isKindOfClass:[PTPusherPresenceChannel class]]
 
 @implementation ComPusherChannelProxy {
+	ComPusherChannelMembersProxy *_membersProxy;
 	NSMutableDictionary *bindings;
 }
 
@@ -23,6 +25,7 @@
 	
   RELEASE_TO_NIL(pusherModule)
   RELEASE_TO_NIL(channel)
+	RELEASE_TO_NIL(_membersProxy);
 	RELEASE_TO_NIL(bindings);
   [super dealloc];
 }
@@ -40,6 +43,15 @@
   // Subscribe the channel!
   pusherChannel = [pusherModule.pusher subscribeToChannelNamed:channel];
   [pusherChannel retain];
+	
+	if(IS_PRESENCE_CHANNEL(pusherChannel)) {
+		ComPusherChannelMembersProxy *membersProxy = [[ComPusherChannelMembersProxy alloc] _initWithPageContext:self.pageContext];
+		[membersProxy _configureWithChannel:(PTPusherPresenceChannel *)pusherChannel];
+		RELEASE_AND_REPLACE(_membersProxy, membersProxy);
+		[membersProxy release];
+		
+		((PTPusherPresenceChannel *)pusherChannel).presenceDelegate = self;
+	}
 }
 
 #pragma mark - Methods
@@ -66,6 +78,12 @@
     [self throwException:@"PusherAPI is not initialized" subreason:@"Please call the setup method with both the appID and the secret" location:CODELOCATION];
 }
 
+-(id)members {
+	if(IS_PRESENCE_CHANNEL(pusherChannel)) {
+		return _membersProxy;
+	} else {
+		return nil;
+	}
 }
 
 -(id)trigger:(id)args {
