@@ -1,8 +1,6 @@
 // Initialization
 
 var Pusher = require('com.pusher');
-Pusher.setup({
-  key: '437c8bf5d9d5529460e9',     // CHANGEME
 Pusher.log = function(message) {
   Ti.API.log("------------------- " + message);
 }
@@ -48,9 +46,12 @@ var handleConnected = function() {
     // Bind to all events on this channel
     window.channel.bind('bind_all', handleEvent);
 
+    // When we subscribe the channel
     window.channel.bind('pusher:subscription_succeeded', function() {
       Ti.API.log("SUBSCRIPTION SUCCEEDED");
 
+      // This only works because it's a presence channel. Otherwise an error would
+      // be thrown.
       Ti.API.log("MEMBER COUNT IS " + window.channel.members.count);
       window.channel.members.each(function(member) {
         Ti.API.log("--------- " + JSON.stringify(member));
@@ -59,6 +60,7 @@ var handleConnected = function() {
       var member = window.channel.members.getMember("1");
       Ti.API.log("------- MEMBER 1 IS " + JSON.stringify(member));
 
+      // You can trigger events from the client side on private and presence channels
       window.channel.trigger("TTTTTT", { foo: 'bar' });
     });
 
