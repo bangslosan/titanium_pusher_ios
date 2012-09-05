@@ -24,6 +24,8 @@
 /* Begin PBXBuildFile section */
 		24DD6CF91134B3F500162E58 /* ComPusherModule.h in Headers */ = {isa = PBXBuildFile; fileRef = 24DD6CF71134B3F500162E58 /* ComPusherModule.h */; };
 		24DD6CFA1134B3F500162E58 /* ComPusherModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DD6CF81134B3F500162E58 /* ComPusherModule.m */; };
+		3E59A88515F7B99B00035329 /* ComPusherChannelMembersProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E59A88315F7B99B00035329 /* ComPusherChannelMembersProxy.h */; };
+		3E59A88615F7B99B00035329 /* ComPusherChannelMembersProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E59A88415F7B99B00035329 /* ComPusherChannelMembersProxy.m */; };
 		3EBB8BFE1466E56E008A4399 /* ComPusherChannelProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EBB8BF81466E56E008A4399 /* ComPusherChannelProxy.h */; };
 		3EBB8BFF1466E56E008A4399 /* ComPusherChannelProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB8BF91466E56E008A4399 /* ComPusherChannelProxy.m */; };
 		3EBB8C021466E56E008A4399 /* ComPusherModuleAssets.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EBB8BFC1466E56E008A4399 /* ComPusherModuleAssets.h */; };
@@ -47,6 +49,8 @@
 		24DD6CF71134B3F500162E58 /* ComPusherModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComPusherModule.h; path = Classes/ComPusherModule.h; sourceTree = "<group>"; };
 		24DD6CF81134B3F500162E58 /* ComPusherModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ComPusherModule.m; path = Classes/ComPusherModule.m; sourceTree = "<group>"; };
 		24DD6D1B1134B66800162E58 /* titanium.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = titanium.xcconfig; sourceTree = "<group>"; };
+		3E59A88315F7B99B00035329 /* ComPusherChannelMembersProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComPusherChannelMembersProxy.h; path = Classes/ComPusherChannelMembersProxy.h; sourceTree = "<group>"; };
+		3E59A88415F7B99B00035329 /* ComPusherChannelMembersProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ComPusherChannelMembersProxy.m; path = Classes/ComPusherChannelMembersProxy.m; sourceTree = "<group>"; };
 		3EBB8BF81466E56E008A4399 /* ComPusherChannelProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComPusherChannelProxy.h; path = Classes/ComPusherChannelProxy.h; sourceTree = "<group>"; };
 		3EBB8BF91466E56E008A4399 /* ComPusherChannelProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ComPusherChannelProxy.m; path = Classes/ComPusherChannelProxy.m; sourceTree = "<group>"; };
 		3EBB8BFC1466E56E008A4399 /* ComPusherModuleAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComPusherModuleAssets.h; path = Classes/ComPusherModuleAssets.h; sourceTree = "<group>"; };
@@ -103,6 +107,8 @@
 		08FB77AEFE84172EC02AAC07 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				3E59A88315F7B99B00035329 /* ComPusherChannelMembersProxy.h */,
+				3E59A88415F7B99B00035329 /* ComPusherChannelMembersProxy.m */,
 				3EBB8BF81466E56E008A4399 /* ComPusherChannelProxy.h */,
 				3EBB8BF91466E56E008A4399 /* ComPusherChannelProxy.m */,
 				3EBB8BFC1466E56E008A4399 /* ComPusherModuleAssets.h */,
@@ -133,6 +139,7 @@
 				24DD6CF91134B3F500162E58 /* ComPusherModule.h in Headers */,
 				3EBB8BFE1466E56E008A4399 /* ComPusherChannelProxy.h in Headers */,
 				3EBB8C021466E56E008A4399 /* ComPusherModuleAssets.h in Headers */,
+				3E59A88515F7B99B00035329 /* ComPusherChannelMembersProxy.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -224,6 +231,7 @@
 				24DD6CFA1134B3F500162E58 /* ComPusherModule.m in Sources */,
 				3EBB8BFF1466E56E008A4399 /* ComPusherChannelProxy.m in Sources */,
 				3EBB8C031466E56E008A4399 /* ComPusherModuleAssets.m in Sources */,
+				3E59A88615F7B99B00035329 /* ComPusherChannelMembersProxy.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
