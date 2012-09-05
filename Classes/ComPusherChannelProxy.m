@@ -59,25 +59,6 @@
 	[pusherChannel unsubscribe];
 }
 
--(void)sendEvent:(id)args {
-  ENSURE_UI_THREAD_1_ARG(args)
-  
-  enum Args {
-    kArgName = 0,
-    kArgData,
-    kArgCount
-  };
-  
-  ENSURE_ARG_COUNT(args, kArgCount);
-  NSString *eventName = [TiUtils stringValue:[args objectAtIndex:kArgName]];
-  NSDictionary *data  = [args objectAtIndex:kArgData];
-  
-  if(pusherModule.pusherAPI)
-		[pusherModule.pusherAPI triggerEvent:eventName onChannel:channel data:data socketID:pusherModule.pusher.connection.socketID];
-  else
-    [self throwException:@"PusherAPI is not initialized" subreason:@"Please call the setup method with both the appID and the secret" location:CODELOCATION];
-}
-
 -(id)members {
 	if(IS_PRESENCE_CHANNEL(pusherChannel)) {
 		return _membersProxy;
