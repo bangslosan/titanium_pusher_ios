@@ -21,35 +21,42 @@ To access this module from JavaScript, you would do the following:
 
 The Pusher variable is a reference to the Module object.	
 
+**Please notice that besides the `Pusher.setup` call, you should just use the official Pusher JS
+documentation, because it's plain better than this, and the API is almost compatible :)**
+
 ## Reference
 
-### Pusher.setup({...})
+### Pusher.setup(pusher_key, [{options}])
 
 This should be the first function you should call on the module, and it will
-configure the Pusher module with the appropriate credentials. It accepts
-a single argument with a dictionary of the following arguments:
+configure the Pusher module with the appropriate credentials. It accepts a Pusher
+key as the first argument, and an optional object with options.
 
 - **key** [string, required]: The Pusher key credential for your application
-- **appID** [string, optional]: The Pusher appID. Only required if you want
-  to send events to channels
-- **secret** [string, optional]: The Pusher secret. Only required if you want
-  to send events to channels
-- **reconnectAutomatically** [boolean, optional]: Set to `false` if you don't
-  want the module to automatically reconnect to the Pusher servers when
-  the connection goes down. Default value is `true`
-- **reconnectDelay** [integer, optional]: The number of seconds this module will
-  wait before it tries to reconnect with the Pusher servers. Default value is
-  5 seconds
+
+- **options** [object, optional]: An object with advanced options:
+
+    - **appID** [string, optional]: The Pusher appID. Only required if you want
+      to send events from the client
+    - **secret** [string, optional]: The Pusher secret. Only required if you want
+      to send events from the client
+    - **reconnectAutomatically** [boolean, optional]: Set to `false` if you don't
+      want the module to automatically reconnect to the Pusher servers when
+      the connection goes down. Default value is `true`
+    - **reconnectDelay** [integer, optional]: The number of seconds this module will
+      wait before it tries to reconnect with the Pusher servers. Default value is
+      `5` seconds
 
 Example:
 
-    Pusher.configure({
-      key: 'your key',
+    Pusher.configure('pusher_key_deadbeef', {
       appID: 'your app ID',
       secret: 'your secret',
       reconnectAutomatically: true,
       reconnectDelay: 5
     });
+
+When you call this function, the module immediately tries to connect to Pusher.
 
 ### Pusher.connect()
 
@@ -70,42 +77,48 @@ Example:
 
     Pusher.disconnect();
 
-### Pusher.subscribeChannel(channelName)
+### Pusher.subscribe(channelName) \[returns a channel object\]
 
 Subscribes to a channel. The first and only argument is a String, required,
 and corresponds to the channel name you want to subscribe.
 
 Example:
 
-    var channel = Pusher.subscribeChannel('test');
+    var channel = Pusher.subscribe('test');
 
 Please notice that this method returns a `Channel` object. For more 
 information about that object see the [Channel documentation](channel.html).
 
-### Pusher.addEventListener('event', callback);
+Also, please notice that after this line, the client isn't immediately binded to
+the channel. You must wait for the `pusher:subscription_succeeded` event on the channel
+(more on that on the Channel documentation).
+
+### Pusher.unsubscribe(channelName)
+
+Unsubscribes from a channel. The first and only argument is a String, required,
+and corresponds to the channel name you want to unsubscribe form.
+
+### Pusher.bind('event', callback);
 
 If you want to bind to an event, regardless of the channel, you should
 use this function. You enter the event name as the first argument, and
 a callback function on the second argument.
 
-The event parameter passed on the callback function as the following three
-properties defined:
-
-- **name** [string]: the name of the event
-- **channel** [string]: the name of the channel where the event was fired
-- **data** [dictionary]: the payload of the message, already parsed and ready
-  to use
+The event parameter passed on the callback function contains only the data
+object sent on that message (the payload) already parsed and ready to use.
 
 Example:
 
-    Pusher.addEventListener('testingevent', function(e) {
-      Ti.API.warn("Received test event on channel " + e.channel);
-      Ti.API.warn("DATA: " + e.data);
+    Pusher.bind('testingevent', function(data) {
+      Ti.API.warn("Received test event with payload " + data);
     });
 
 Please notice that to stop receiving events on that callback, you should
-use the standard `removeEventListener` function.
+use the `unbind` function.
 
+### Pusher.unbind('event', callback)
+
+Unbinds a specific callback from a previously binded event.
 
 ### Pusher.sendEvent(eventName, channelName, data)
 
@@ -122,6 +135,12 @@ Example:
 Please notice that, to use this method, you have to provide both the **appID**
 and the **secret** on the configure function above.
 
+## Properties
+
+### state
+
+Returns the current connection state as a string.
+
 ## Events
 
 ### connected
@@ -134,9 +153,15 @@ Pusher servers.
 Fired when Pusher disconnects from the server. If `reconnectAutomatically` was
 `true`, Pusher will automatically try to call the server again.
 
-### event
+### connecting
 
-If you bind the event named 'event' you will automatically receive all
+### initialized
+
+Fired when Pusher is in a configured state, ready to connect.
+
+### bind_all
+
+If you bind the event named `bind_all` you will automatically receive all
 the events that your device receives, regardless of the event name or the
 channel where it was fired. Useful for debugging purposes.
 
@@ -147,3 +172,4 @@ Please see the `example/app.js` file included with this module.
 ## Author
 
 Ruben Fonseca <fonseka@gmail.com>
+
