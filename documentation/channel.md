@@ -15,7 +15,7 @@ Example:
 
     channel.unsubscribe();
 
-### channel.sendEvent(eventName, data)
+### channel.trigger(eventName, data)
 
 Sends an event to this channel.
 
@@ -24,39 +24,39 @@ Sends an event to this channel.
 
 Example:
 
-    channel.sendEvent('eventname', {foo: 'bar', zbr: 123});
+    channel.trigger('eventname', {foo: 'bar', zbr: 123});
 
-Please notice that, to use this method, you have to provide both the **appID**
-and the **secret** on the Pusher.configure() function. Please refer to the 
-documentation of that function [here](index.html).
+Please notice that, to use this method, the channel type must be Private or Presence. Public channels
+will not accept messages.
 
-### channel.addEventListener(eventName, callback)
+### channel.bind(eventName, callback)
 
 Binds to an event on this channel. You should enter the event name as the first
 argument, and a callback function on the second argument.
 
-The event parameter passed on the callback function as the following three
-properties defined:
-
-- **name** [string]: the name of the event
-- **channel** [string]: the name of the channel where the event was fired
-- **data** [dictionary]: the payload of the message, already parsed and ready
-  to use
+The callback receives a single argument with the payload of the message.
 
 Example:
 
-    channel.addEventListener('testingevent', function(e) {
-      Ti.API.warn("RECEIVED EVENT DATA: " + e.data);
+    channel.bind('testingevent', function(data) {
+      Ti.API.warn("RECEIVED EVENT DATA: " + data);
     });
 
 Please notice that to stop receiving events on that callback, you should
-use the standard `removeEventListener` function.
+use the `unbind` function.
+
+## Properties
+
+### members
+
+Returns a reference to the members object, if this is a presence channel. For more information see
+the [members](members.html) documentation.
 
 ## Events
 
-### event
+### bind_all
 
-If you bind the event named 'event' you will automatically receive all
+If you bind the event named 'bind_all' you will automatically receive all
 the events that your device receives **on this channel**, regardless of the event name.
 Useful for debugging purposes.
 
