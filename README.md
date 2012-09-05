@@ -66,5 +66,13 @@ The main difference when you want to port your code is initialization and global
 
         pusher.subscribe(...)
 
-Other than this, this module should have 100% compatibility with the Javascript counterpart!
+There are a few quirks on other parts too:
+
+- you cannot use `channel.members.get("1")` because it seems that `get` is
+  somewhat a reserved word on Titanium. Use `getMember("1")` instead.
+- the `channel.members.me` call is not implemented yet.
+
+Other than this, this module should have 100% compatibility with the Javascript
+counterpart! So you can just follow the official Pusher JS documentation.
+
 
