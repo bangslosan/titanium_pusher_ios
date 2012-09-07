@@ -1,3 +1,9 @@
 [submodule "libPusher"]
 	path = libPusher
-	url = https://github.com/lukeredpath/libPusher.git
+	url = https://github.com/rubenfonseca/libPusher.git
+[submodule "TouchJSON"]
+	path = TouchJSON
+	url = https://github.com/TouchCode/TouchJSON.git
+[submodule "SocketRocket"]
+	path = SocketRocket
+	url = https://github.com/square/SocketRocket.git
