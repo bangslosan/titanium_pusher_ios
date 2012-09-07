@@ -10,15 +10,11 @@ install](http://wiki.appcelerator.org/display/tis/Using+Titanium+Modules).
 
 ## Building
 
-Before you can build the module, you have to install the Pods from Podfile 
-(powered by Cocoapods). To do that, open the terminal inside the project
-and enter:
+Before you can build the module, you have to update the dependencies using
+git:
 
-    $ sudo gem install cocoapods
-    $ pod install
-
-This will create a new directory `Pods` inside your project, with all the
-project dependencies.
+    $ git submodule init
+    $ git submodule update
 
 Then, assuming you have the latest Titanium Mobile, Xcode (currently 4.4) and
 the iOS SDK (currently 5.0), you can build simply by entering
