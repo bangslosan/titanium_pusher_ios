@@ -46,6 +46,16 @@ key as the first argument, and an optional object with options.
     - **reconnectDelay** [integer, optional]: The number of seconds this module will
       wait before it tries to reconnect with the Pusher servers. Default value is
       `5` seconds
+    - **encrypted** [boolean, optional]: Configures a Pusher instance to only
+      connect over encrypted (SSL) connections. An application that uses SSL
+      should use this option to ensure connection traffic is encrypted. Default
+      is `true`.
+    - **auth** [object, optional]: The auth option lets you send additional
+      information with the authentication request. The properties available on
+      the `auth` option are as follows:
+          - **headers** [object]: Provides the ability to pass additional HTTP
+            Headers to the channel authentication endpoint when authenticating a
+            channel
 
 Example:
 
@@ -53,7 +63,13 @@ Example:
       appID: 'your app ID',
       secret: 'your secret',
       reconnectAutomatically: true,
-      reconnectDelay: 5
+      reconnectDelay: 5,
+      encrypted: true,
+      auth: {
+        headers: {
+          CSRFToken: 'some_csrf_token'
+        }
+      }
     });
 
 When you call this function, the module immediately tries to connect to Pusher.

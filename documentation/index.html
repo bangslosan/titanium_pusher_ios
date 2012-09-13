@@ -70,6 +70,19 @@ key as the first argument, and an optional object with options.</p>
 <li><strong>reconnectDelay</strong> [integer, optional]: The number of seconds this module will
  wait before it tries to reconnect with the Pusher servers. Default value is
  <code>5</code> seconds</li>
+<li><strong>encrypted</strong> [boolean, optional]: Configures a Pusher instance to only
+ connect over encrypted (SSL) connections. An application that uses SSL
+ should use this option to ensure connection traffic is encrypted. Default
+ is <code>true</code>.</li>
+<li><strong>auth</strong> [object, optional]: The auth option lets you send additional
+ information with the authentication request. The properties available on
+ the <code>auth</code> option are as follows:
+
+<ul>
+<li><strong>headers</strong> [object]: Provides the ability to pass additional HTTP
+Headers to the channel authentication endpoint when authenticating a
+channel</li>
+</ul></li>
 </ul></li>
 </ul>
 
@@ -79,7 +92,13 @@ key as the first argument, and an optional object with options.</p>
   appID: 'your app ID',
   secret: 'your secret',
   reconnectAutomatically: true,
-  reconnectDelay: 5
+  reconnectDelay: 5,
+  encrypted: true,
+  auth: {
+    headers: {
+      CSRFToken: 'some_csrf_token'
+    }
+  }
 });
 </code></pre>
 
@@ -205,7 +224,7 @@ channel where it was fired. Useful for debugging purposes.</p>
 
 <h2 id="author">Author</h2>
 
-<p>Ruben Fonseca <a href="&#109;&#x61;&#105;&#108;&#x74;&#x6f;&#x3a;&#102;&#x6f;&#110;&#x73;&#x65;&#107;&#x61;&#x40;&#103;&#109;&#97;&#105;&#108;&#x2e;&#99;&#111;&#x6d;">&#102;&#111;&#x6e;&#115;&#101;&#x6b;&#x61;&#64;&#x67;&#x6d;&#97;&#105;&#x6c;&#46;&#x63;&#x6f;&#x6d;</a></p>
+<p>Ruben Fonseca <a href="&#x6d;&#97;&#105;&#108;&#x74;&#x6f;&#58;&#102;&#111;&#110;&#115;&#x65;&#x6b;&#97;&#x40;&#103;&#x6d;&#97;&#105;&#108;&#x2e;&#99;&#x6f;&#x6d;">&#102;&#111;&#110;&#x73;&#101;&#107;&#97;&#x40;&#x67;&#109;&#97;&#105;&#x6c;&#x2e;&#x63;&#x6f;&#109;</a></p>
     </div>
 </body>
 </html>
