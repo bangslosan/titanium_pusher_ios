@@ -24,6 +24,10 @@ Example:
 
 This method can be used to get a member with a specified userId (string).
 
+### Members.me
+
+This property gets the id and info for the current presence user.
+
 ## Properties
 
 ### count \[readonly\]
