@@ -361,6 +361,15 @@ static ComPusherModule *_instance;
 	}
 }
 
+-(NSDictionary *)additionalDataForChannelAuthorization {
+	if(authParams && [authParams objectForKey:@"params"]) {
+		NSDictionary *params = [authParams valueForKey:@"params"];
+		return params;
+	}
+	
+	return nil;
+}
+
 #pragma mark - Rechability
 
 -(void)reachabilityChanged:(NSNotification *)note {

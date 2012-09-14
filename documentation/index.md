@@ -56,6 +56,8 @@ key as the first argument, and an optional object with options.
           - **headers** [object]: Provides the ability to pass additional HTTP
             Headers to the channel authentication endpoint when authenticating a
             channel
+          - **params** [object]: Additional parameters to be sent when the
+            channel authentication endpoint is called.
 
 Example:
 
@@ -68,6 +70,10 @@ Example:
       auth: {
         headers: {
           CSRFToken: 'some_csrf_token'
+        },
+        params: {
+          param1: 'value1',
+          param2: 'value2'
         }
       }
     });
