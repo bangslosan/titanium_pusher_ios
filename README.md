@@ -73,7 +73,6 @@ There are a few quirks on other parts too:
 
 - you cannot use `channel.members.get("1")` because it seems that `get` is
   somewhat a reserved word on Titanium. Use `getMember("1")` instead.
-- the `channel.members.me` call is not implemented yet. (no support in on `libmPusher`)
 
 Other than this, this module should have 100% compatibility with the Javascript
 counterpart! So you can just follow the official Pusher JS documentation [here](http://pusher.com/docs).
