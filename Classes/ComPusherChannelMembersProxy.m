@@ -41,4 +41,9 @@
 	}
 }
 
+-(id)me {
+	NSDictionary *info = [_presenceChannel me];
+	return info;
+}
+
 @end

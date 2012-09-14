@@ -60,6 +60,8 @@ var handleConnected = function() {
       var member = window.channel.members.getMember("1");
       Ti.API.log("------- MEMBER 1 IS " + JSON.stringify(member));
 
+      Ti.API.log("-------- ME ---> " + JSON.stringify(window.channel.members.me));
+
       // You can trigger events from the client side on private and presence channels
       window.channel.trigger("TTTTTT", { foo: 'bar' });
     });
