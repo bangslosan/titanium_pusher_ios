@@ -143,14 +143,14 @@
 	}
 }
 
--(void)fireEvent:(NSString *)type withObject:(id)data {
+-(void)fireEvent:(NSString *)type withObject:(NSArray *)data {
 	NSDictionary *map = [bindings objectForKey:type];
 	[map enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 		TiObjectRef callbackFunction = [(NSValue *)key pointerValue];
 		KrollCallback *callback = [KrollObject toID:[self.executionContext krollContext] value:callbackFunction];
 		
 		NSArray *payload = @[];
-		if(data) { payload = @[data]; }
+		if(data) { payload = data; }
 		
 		[[callback context] invokeBlockOnThread:^{
 			[callback call:payload thisObject:self];
@@ -160,11 +160,11 @@
 
 #pragma mark - PTPusherPresenceChannelDelegate
 -(void)presenceChannel:(PTPusherPresenceChannel *)channel memberAddedWithID:(NSString *)memberID memberInfo:(NSDictionary *)memberInfo {
-	[self fireEvent:@"pusher:member_added" withObject:@{ @"member" : @{ @"id" : memberID, @"info": memberInfo } }];
+	[self fireEvent:@"pusher:member_added" withObject:@[@{ @"member" : @{ @"id" : memberID, @"info": memberInfo } }]];
 }
 
 -(void)presenceChannel:(PTPusherPresenceChannel *)channel memberRemovedWithID:(NSString *)memberID memberInfo:(NSDictionary *)memberInfo atIndex:(NSInteger)index {
-	[self fireEvent:@"pusher:member_removed" withObject:@{ @"member" : @{ @"id" : memberID, @"info": memberInfo } }];
+	[self fireEvent:@"pusher:member_removed" withObject:@[@{ @"member" : @{ @"id" : memberID, @"info": memberInfo } }]];
 }
 
 -(void)presenceChannel:(PTPusherPresenceChannel *)channel didSubscribeWithMemberList:(NSArray *)members {

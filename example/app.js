@@ -80,8 +80,6 @@ var handleConnected = function() {
 
     // Bind to a specific event on this channel
     window.channel.bind('alert', handleAlertEvent);
-
-    window.channel.unbind('bind_all', handleEvent);
   });
   Pusher.connect();
 };
@@ -98,7 +96,9 @@ var handleDisconnected = function() {
   Pusher.disconnect();
 }
 
-var handleEvent = function(data) {
+var handleEvent = function(name, data) {
+  Ti.API.warn("New event: " + name);
+
   var label = Ti.UI.createLabel({
     text: JSON.stringify(data),
     top: 3,

@@ -94,7 +94,7 @@ static ComPusherModule *_instance;
 		PTPusherConnectionState new = [[change valueForKey:NSKeyValueChangeNewKey] integerValue];
 		
 		[self fireEvent:[self _stringFromState:new] withObject:nil];
-		[self fireEvent:@"status_change" withObject:@{ @"previous" : [self _stringFromState:old], @"current" : [self _stringFromState:new] }];
+		[self fireEvent:@"status_change" withObject:@[@{ @"previous" : [self _stringFromState:old], @"current" : [self _stringFromState:new] }]];
 	}
 	
 	if([keyPath isEqualToString:@"channel_auth_endpoint"]) {
@@ -225,10 +225,10 @@ static ComPusherModule *_instance;
   
 	[[channels valueForKey:pusher_event.channel] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		ComPusherChannelProxy *proxy = (ComPusherChannelProxy *)obj;
-    [proxy fireEvent:@"bind_all" withObject:pusher_event.data];
+    [proxy fireEvent:@"bind_all" withObject:@[pusher_event.name, pusher_event.data]];
 	}];
   
-	[self fireEvent:@"bind_all" withObject:pusher_event.data];
+	[self fireEvent:@"bind_all" withObject:@[pusher_event.name, pusher_event.data]];
 }
 
 -(void)bind:(id)args {
@@ -284,14 +284,14 @@ static ComPusherModule *_instance;
 	}
 }
 
--(void)fireEvent:(NSString *)type withObject:(id)data {
+-(void)fireEvent:(NSString *)type withObject:(NSArray *)data {
 	NSDictionary *map = [bindings objectForKey:type];
 	[map enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 		TiObjectRef callbackFunction = [(NSValue *)key pointerValue];
 		KrollCallback *callback = [KrollObject toID:[self.executionContext krollContext] value:callbackFunction];
 		
 		NSArray *payload = @[];
-		if(data) { payload = @[data]; }
+		if(data) { payload = data; }
 		
 		[[callback context] invokeBlockOnThread:^{
 			[callback call:payload thisObject:self];
@@ -316,7 +316,7 @@ static ComPusherModule *_instance;
 	if([reachability currentReachabilityStatus] == NotReachable) {
 		// change status to unavailable
 		[self fireEvent:@"unavailable" withObject:nil];
-		[self fireEvent:@"status_change" withObject:@{ @"previous" : [self _stringFromState:pusher.connection.state], @"current" : @"unavailable" }];
+		[self fireEvent:@"status_change" withObject:@[@{ @"previous" : [self _stringFromState:pusher.connection.state], @"current" : @"unavailable" }]];
 		
 		// there is no point in trying to reconnect at this point
 		pusher.reconnectAutomatically = NO;
@@ -330,7 +330,7 @@ static ComPusherModule *_instance;
 }
 
 -(void)pusher:(PTPusher *)pusher connectionWillReconnect:(PTPusherConnection *)connection afterDelay:(NSTimeInterval)delay {
-	[self fireEvent:@"connecting_in" withObject:@(delay)];
+	[self fireEvent:@"connecting_in" withObject:@[@(delay)]];
 }
 
 -(void)pusher:(PTPusher *)pusher didSubscribeToChannel:(PTPusherChannel *)channel {
@@ -345,7 +345,7 @@ static ComPusherModule *_instance;
 	[[channels valueForKey:channel.name] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
 		ComPusherChannelProxy *channelProxy = (ComPusherChannelProxy *)obj;
 		
-		[channelProxy fireEvent:@"pusher:subscription_error" withObject:@(error.code)];
+		[channelProxy fireEvent:@"pusher:subscription_error" withObject:@[@(error.code)]];
 	}];
 }
 
