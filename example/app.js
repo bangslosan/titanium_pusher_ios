@@ -1,6 +1,8 @@
 // Initialization
 
-var Pusher = require('com.pusher');
+// var Pusher = require('com.pusher');
+var Pusher = Ti.ComPusher;
+
 Pusher.log = function(message) {
   Ti.API.log("------------------- " + message);
 }
@@ -43,44 +45,54 @@ var handleConnected = function() {
   connect_button.enabled = false;
   add_message_button.enabled = true;
 
-  Pusher.bind('connected', function() {
-    Ti.API.warn("PUSHER CONNECTED");
+  Pusher.connection.bind('connected', function() {
+    Ti.API.warn("Connected :)");
+
     connect_button.title = 'Disconnect';
     connect_button.enabled = true;
-
-    // Connect to channel
-    window.channel = Pusher.subscribe('presence-test');
-
-    // Bind to all events on this channel
-    window.channel.bind('bind_all', handleEvent);
-
-    // When we subscribe the channel
-    window.channel.bind('pusher:subscription_succeeded', function() {
-      Ti.API.log("SUBSCRIPTION SUCCEEDED");
-
-      // This only works because it's a presence channel. Otherwise an error would
-      // be thrown.
-      Ti.API.log("MEMBER COUNT IS " + window.channel.members.count);
-      window.channel.members.each(function(member) {
-        Ti.API.log("--------- " + JSON.stringify(member));
-      });
-
-      var member = window.channel.members.getMember("1");
-      Ti.API.log("------- MEMBER 1 IS " + JSON.stringify(member));
-
-      Ti.API.log("-------- ME ---> " + JSON.stringify(window.channel.members.me));
-
-      // You can trigger events from the client side on private and presence channels
-      window.channel.trigger("TTTTTT", { foo: 'bar' });
-    });
-
-    window.channel.bind('pusher:subscription_error', function(status) {
-      Ti.API.log("SUBSCRIPTION FAILED " + status);
-    });
-
-    // Bind to a specific event on this channel
-    window.channel.bind('alert', handleAlertEvent);
   });
+
+  Pusher.connection.bind('disconnected', function() {
+    Ti.API.warn("Disconnected :(");
+  });
+
+  // Connect to channel
+  window.channel = Pusher.subscribe('presence-test');
+
+  // Bind to all events on this channel
+  window.channel.bind('bind_all', handleEvent);
+
+  // When we subscribe the channel
+  window.channel.bind('pusher:subscription_succeeded', function() {
+    Ti.API.log("SUBSCRIPTION SUCCEEDED");
+
+    // This only works because it's a presence channel. Otherwise an error would
+    // be thrown.
+    Ti.API.log("MEMBER COUNT IS " + window.channel.members.count);
+    window.channel.members.each(function(member) {
+      Ti.API.log("--------- " + JSON.stringify(member));
+    });
+
+    var member = window.channel.members.getMember("1");
+    Ti.API.log("------- MEMBER 1 IS " + JSON.stringify(member));
+
+    Ti.API.log("-------- ME ---> " + JSON.stringify(window.channel.members.me));
+
+    // You can trigger events from the client side on private and presence channels
+    window.channel.trigger("TTTTTT", { foo: 'bar' });
+  });
+
+  // Just trying to trigger an event before we are connected
+  window.channel.trigger("TTTTTT", { foo: 'bar' });
+
+  window.channel.bind('pusher:subscription_error', function(status) {
+    Ti.API.log("SUBSCRIPTION FAILED " + status);
+  });
+
+  // Bind to a specific event on this channel
+  window.channel.bind('alert', handleAlertEvent);
+
+  // Fire the connection
   Pusher.connect();
 };
 

@@ -165,8 +165,6 @@ static ComPusherModule *_instance;
 -(void)disconnect:(id)args {
 	pusher.reconnectAutomatically = NO;
   [pusher disconnect];
-	
-	RELEASE_AND_REPLACE(channels, [[NSMutableDictionary alloc] init]);
 }
 
 -(id)subscribe:(id)args {
