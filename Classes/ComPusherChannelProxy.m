@@ -80,10 +80,15 @@
 	ENSURE_TYPE(eventData, NSDictionary);
 	
 	if([pusherChannel isKindOfClass:[PTPusherPrivateChannel class]]) {
-		PTPusherPrivateChannel *privateChannel = (PTPusherPrivateChannel *)pusherChannel;
-		[privateChannel triggerEventNamed:eventName data:eventData];
-		
-		return @(YES);
+		if(pusherModule.pusher.connection.isConnected) {
+			PTPusherPrivateChannel *privateChannel = (PTPusherPrivateChannel *)pusherChannel;
+			[privateChannel triggerEventNamed:eventName data:eventData];
+			
+			return @(YES);
+		} else {
+			NSLog(@"Warning: trying to trigger an event without a connection");
+			return @(NO);
+		}
 	} else {
 		return @(NO);
 	}
