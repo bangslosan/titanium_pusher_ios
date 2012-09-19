@@ -45,6 +45,20 @@ Example:
 Please notice that to stop receiving events on that callback, you should
 use the `unbind` function.
 
+### channel.bind_all(callback)
+
+It is possible to bind to all events at either the global or channel level by
+using the method bind_all. This is used for debugging, but may have other
+utilities.
+
+Example:
+
+    channel.bind_all(function(name, data) {
+      Ti.API.warn("Received event named " + name);
+      Ti.API.warn("DATA: " + JSON.stringify(data));
+    });
+
+
 ## Properties
 
 ### members

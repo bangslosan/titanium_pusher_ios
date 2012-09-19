@@ -72,6 +72,20 @@ argument, and a callback function on the second argument.</p>
 <p>Please notice that to stop receiving events on that callback, you should
 use the <code>unbind</code> function.</p>
 
+<h3 id="channel.bind_allcallback">channel.bind_all(callback)</h3>
+
+<p>It is possible to bind to all events at either the global or channel level by
+using the method bind_all. This is used for debugging, but may have other
+utilities.</p>
+
+<p>Example:</p>
+
+<pre><code>channel.bind_all(function(name, data) {
+  Ti.API.warn(&quot;Received event named &quot; + name);
+  Ti.API.warn(&quot;DATA: &quot; + JSON.stringify(data));
+});
+</code></pre>
+
 <h2 id="properties">Properties</h2>
 
 <h3 id="members">members</h3>

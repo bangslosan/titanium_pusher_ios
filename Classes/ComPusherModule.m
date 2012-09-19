@@ -263,6 +263,13 @@ static ComPusherModule *_instance;
 	[bindings setObject:map forKey:type];
 }
 
+-(void)bind_all:(id)args {
+	KrollCallback *listener = [args objectAtIndex:0];
+	ENSURE_TYPE(listener, KrollCallback);
+	
+	[self bind:@[@"bind_all", listener]];
+}
+
 -(void)unbind:(id)args {
 	NSString *type = [args objectAtIndex:0];
 	KrollCallback* listener = [args objectAtIndex:1];

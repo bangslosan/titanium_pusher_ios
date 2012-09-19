@@ -157,6 +157,17 @@ Example:
 Please notice that, to use this method, you have to provide both the **appID**
 and the **secret** on the configure function above.
 
+### Pusher.bind_all(callback)
+
+It is possible to bind to all events at either the global or channel level by using the method bind_all. This is used for debugging, but may have other utilities.
+
+Example:
+
+    Pusher.bind_all(function(name, data) {
+      Ti.API.warn("Received event named " + name);
+      Ti.API.warn("DATA: " + JSON.stringify(data));
+    });
+
 ## Properties
 
 ### state

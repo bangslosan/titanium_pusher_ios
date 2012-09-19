@@ -60,7 +60,7 @@ var handleConnected = function() {
   window.channel = Pusher.subscribe('presence-test');
 
   // Bind to all events on this channel
-  window.channel.bind('bind_all', handleEvent);
+  window.channel.bind_all(handleEvent);
 
   // When we subscribe the channel
   window.channel.bind('pusher:subscription_succeeded', function() {
