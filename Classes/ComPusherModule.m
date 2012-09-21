@@ -31,6 +31,8 @@ static ComPusherModule *_instance;
 	NSDictionary *authParams;
 	NSMutableDictionary *bindings;
   NSMutableDictionary *channels;
+	
+	UIBackgroundTaskIdentifier disconnectID;
 }
 
 @synthesize pusher, pusherAPI;
@@ -164,6 +166,10 @@ static ComPusherModule *_instance;
 
 -(void)disconnect:(id)args {
 	pusher.reconnectAutomatically = NO;
+	
+	disconnectID = [[UIApplication sharedApplication] beginBackgroundTaskWithExpirationHandler:^{
+		[[UIApplication sharedApplication] endBackgroundTask:disconnectID];
+	}];
   [pusher disconnect];
 }
 
@@ -317,6 +323,8 @@ static ComPusherModule *_instance;
 
 -(void)pusher:(PTPusher *)p connection:(PTPusherConnection *)connection didDisconnectWithError:(NSError *)error {
 	Reachability *reachability = [Reachability reachabilityForInternetConnection];
+	
+	[[UIApplication sharedApplication] endBackgroundTask:disconnectID];
 	
 	if([reachability currentReachabilityStatus] == NotReachable) {
 		// change status to unavailable
