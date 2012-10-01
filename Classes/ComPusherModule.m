@@ -255,9 +255,7 @@ static ComPusherModule *_instance;
 	}
 	
 	PTPusherEventBinding *binding = [pusher bindToEventNamed:type handleWithBlock:^(PTPusherEvent *pusher_event) {
-		[[self.executionContext krollContext] invokeBlockOnThread:^{
-			[listener call:@[pusher_event.data] thisObject:self];
-		}];
+		[self fireEvent:type withObject:@[pusher_event.data]];
 	}];
 	
 	NSValue *callbackValue = [NSValue valueWithPointer:callbackFunction];
@@ -300,12 +298,13 @@ static ComPusherModule *_instance;
 		NSDictionary *map = [bindings objectForKey:type];
 		[map enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 			TiObjectRef callbackFunction = [(NSValue *)key pointerValue];
-			KrollCallback *callback = [KrollObject toID:[self.executionContext krollContext] value:callbackFunction];
+			KrollCallback *callback = [[KrollCallback alloc] initWithCallback:callbackFunction thisObject:nil context:[self.executionContext krollContext]];
 			
 			NSArray *payload = @[];
 			if(data) { payload = data; }
 			
 			[callback call:payload thisObject:self];
+			[callback release];
 		}];
 	}];
 }
