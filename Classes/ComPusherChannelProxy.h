@@ -14,6 +14,9 @@
 
 #import "ComPusherModule.h"
 
+#define IS_PRESENCE_CHANNEL(channel) \
+  [channel isKindOfClass:[PTPusherPresenceChannel class]]
+
 @interface ComPusherChannelProxy : TiProxy <PTPusherPresenceChannelDelegate> {
   ComPusherModule *pusherModule;
   

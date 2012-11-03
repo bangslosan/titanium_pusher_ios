@@ -11,9 +11,6 @@
 
 #import "TiUtils.h"
 
-#define IS_PRESENCE_CHANNEL(channel) \
-  [channel isKindOfClass:[PTPusherPresenceChannel class]]
-
 @implementation ComPusherChannelProxy {
 	ComPusherChannelMembersProxy *_membersProxy;
 	NSMutableDictionary *bindings;
@@ -181,6 +178,7 @@
 }
 
 -(void)presenceChannel:(PTPusherPresenceChannel *)channel didSubscribeWithMemberList:(NSArray *)members {
+	[self fireEvent:@"pusher:subscription_succeeded" withObject:@[[self members]]];
 }
 
 @end

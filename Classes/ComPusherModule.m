@@ -346,11 +346,14 @@ static ComPusherModule *_instance;
 }
 
 -(void)pusher:(PTPusher *)pusher didSubscribeToChannel:(PTPusherChannel *)channel {
-	[[channels valueForKey:channel.name] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
-		ComPusherChannelProxy *channelProxy = (ComPusherChannelProxy *)obj;
-		
-		[channelProxy fireEvent:@"pusher:subscription_succeeded" withObject:nil];
-	}];
+	// Only fire subscription_succeeded events if the channel is not a presence channel
+	//    Presence channels have a special mechanism to generate the subscription_succeeded event
+	if(!IS_PRESENCE_CHANNEL(channel)) {
+		[[channels valueForKey:channel.name] enumerateObjectsUsingBlock:^(id obj, NSUInteger idx, BOOL *stop) {
+			ComPusherChannelProxy *channelProxy = (ComPusherChannelProxy *)obj;
+			[channelProxy fireEvent:@"pusher:subscription_succeeded" withObject:nil];
+		}];
+	}
 }
 
 -(void)pusher:(PTPusher *)pusher didFailToSubscribeToChannel:(PTPusherChannel *)channel withError:(NSError *)error {
