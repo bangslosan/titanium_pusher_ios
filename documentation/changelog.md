@@ -1,4 +1,11 @@
-- 2012-09-xx Ruben Fonseca <fonseka@gmail.com>
+- 2012-11-03 Ruben Fonseca <fonseka@gmail.com>
+
+    * version 1.6 released
+
+    * fixed event pusher:subscription_error on presence channels:
+      should contain the members proxy as the first callback argument
+
+- 2012-09-01 Ruben Fonseca <fonseka@gmail.com>
 
     * version 1.0 released
   
