@@ -102,7 +102,6 @@
 	// First make sure that the binding doesn't exist already
 	NSMutableDictionary *map = [bindings objectForKey:type];
 	if(map) {
-		TiObjectRef callbackFunction = [listener function];
 		NSValue *callbackValue = [NSValue valueWithPointer:callbackFunction];
 		PTPusherEventBinding *binding = [map objectForKey:callbackValue];
 		
@@ -117,6 +116,7 @@
 		}];
 	}];
 	
+	TiValueProtect([[self.executionContext krollContext] context], callbackFunction);
 	NSValue *callbackValue = [NSValue valueWithPointer:callbackFunction];
 	map = [bindings objectForKey:type];
 	if(!map)
@@ -145,6 +145,8 @@
 		PTPusherEventBinding *binding = [map objectForKey:callbackValue];
 		
 		if(binding) {
+			TiValueUnprotect([[self.executionContext krollContext] context], callbackFunction);
+			
 			[pusherChannel removeBinding:binding];
 			[map removeObjectForKey:callbackValue];
 			[bindings setObject:map forKey:type];

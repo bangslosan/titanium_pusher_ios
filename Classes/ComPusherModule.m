@@ -245,7 +245,6 @@ static ComPusherModule *_instance;
 	// First make sure that the binding doesn't exist already
 	NSMutableDictionary *map = [bindings objectForKey:type];
 	if(map) {
-		TiObjectRef callbackFunction = [listener function];
 		NSValue *callbackValue = [NSValue valueWithPointer:callbackFunction];
 		PTPusherEventBinding *binding = [map objectForKey:callbackValue];
 		
@@ -258,6 +257,7 @@ static ComPusherModule *_instance;
 		[self fireEvent:type withObject:@[pusher_event.data]];
 	}];
 	
+	TiValueProtect([[self.executionContext krollContext] context], callbackFunction);
 	NSValue *callbackValue = [NSValue valueWithPointer:callbackFunction];
 	map = [bindings objectForKey:type];
 	if(!map)
@@ -286,6 +286,8 @@ static ComPusherModule *_instance;
 		PTPusherEventBinding *binding = [map objectForKey:callbackValue];
 		
 		if(binding) {
+			TiValueUnprotect([[self.executionContext krollContext] context], callbackFunction);
+			
 			[pusher removeBinding:binding];
 			[map removeObjectForKey:callbackValue];
 			[bindings setObject:map forKey:type];
