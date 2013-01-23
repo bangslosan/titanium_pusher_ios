@@ -12,7 +12,7 @@ Pusher.channel_auth_endpoint = "http://floating-garden-8662.herokuapp.com/presen
 Pusher.setup('437c8bf5d9d5529460e9', {
   appID: '1305',                   // CHANGEME
   secret: '0750515631c6e8300b03',  // CHANGEME
-  reconnectAutomaticaly: false
+  reconnectAutomaticaly: true
 });
 
 Pusher.connection.bind('status_change', function(status) {

@@ -1,3 +1,9 @@
+- 2012-12-01 Ruben Fonseca <fonseka@gmail.com>
+
+    * version 1.7 released
+
+    * fixed problems when network connectivity fluctuated
+
 - 2012-11-03 Ruben Fonseca <fonseka@gmail.com>
 
     * version 1.6 released

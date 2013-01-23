@@ -111,12 +111,12 @@
 	}
 	
 	PTPusherEventBinding *binding = [pusherChannel bindToEventNamed:type handleWithBlock:^(PTPusherEvent *pusher_event) {
-		[[self.executionContext krollContext] invokeBlockOnThread:^{
+		[[self.pageContext krollContext] invokeBlockOnThread:^{
 			[listener call:@[pusher_event.data] thisObject:self];
 		}];
 	}];
 	
-	TiValueProtect([[self.executionContext krollContext] context], callbackFunction);
+	TiValueProtect([[self.pageContext krollContext] context], callbackFunction);
 	NSValue *callbackValue = [NSValue valueWithPointer:callbackFunction];
 	map = [bindings objectForKey:type];
 	if(!map)
@@ -145,7 +145,7 @@
 		PTPusherEventBinding *binding = [map objectForKey:callbackValue];
 		
 		if(binding) {
-			TiValueUnprotect([[self.executionContext krollContext] context], callbackFunction);
+			TiValueUnprotect([[self.pageContext krollContext] context], callbackFunction);
 			
 			[pusherChannel removeBinding:binding];
 			[map removeObjectForKey:callbackValue];
@@ -155,11 +155,12 @@
 }
 
 -(void)fireEvent:(NSString *)type withObject:(NSArray *)data {
-	[[self.executionContext krollContext] invokeBlockOnThread:^{
+	[[self.pageContext krollContext] invokeBlockOnThread:^{
 		NSDictionary *map = [bindings objectForKey:type];
 		[map enumerateKeysAndObjectsUsingBlock:^(id key, id obj, BOOL *stop) {
 			TiObjectRef callbackFunction = [(NSValue *)key pointerValue];
-			KrollCallback *callback = [[KrollCallback alloc] initWithCallback:callbackFunction thisObject:nil context:[self.executionContext krollContext]];
+			
+			KrollCallback *callback = [[KrollCallback alloc] initWithCallback:callbackFunction thisObject:nil context:[self.pageContext krollContext]];
 			
 			NSArray *payload = @[];
 			if(data) { payload = data; }
