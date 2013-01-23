@@ -8,6 +8,10 @@ You should also download the latest version of the module and follow the
 instructions [here to
 install](http://wiki.appcelerator.org/display/tis/Using+Titanium+Modules).
 
+## Download pre-compiled versions
+
+- version 1.8 [ [link](http://rubenfonseca-github.s3.amazonaws.com/pusher-ios/com.pusher-iphone-1.8.zip) ]
+
 ## Building
 
 Before you can build the module, you have to update the dependencies using

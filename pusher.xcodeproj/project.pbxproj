@@ -26,6 +26,8 @@
 		24DD6CFA1134B3F500162E58 /* ComPusherModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 24DD6CF81134B3F500162E58 /* ComPusherModule.m */; };
 		3E59A88515F7B99B00035329 /* ComPusherChannelMembersProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E59A88315F7B99B00035329 /* ComPusherChannelMembersProxy.h */; };
 		3E59A88615F7B99B00035329 /* ComPusherChannelMembersProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E59A88415F7B99B00035329 /* ComPusherChannelMembersProxy.m */; };
+		3E908EAB16B05C2F00858D4A /* Reachability.h in Headers */ = {isa = PBXBuildFile; fileRef = 3E908EA716B05C2F00858D4A /* Reachability.h */; };
+		3E908EAC16B05C2F00858D4A /* Reachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 3E908EA816B05C2F00858D4A /* Reachability.m */; settings = {COMPILER_FLAGS = "-fobjc-arc"; }; };
 		3EBB8BFE1466E56E008A4399 /* ComPusherChannelProxy.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EBB8BF81466E56E008A4399 /* ComPusherChannelProxy.h */; };
 		3EBB8BFF1466E56E008A4399 /* ComPusherChannelProxy.m in Sources */ = {isa = PBXBuildFile; fileRef = 3EBB8BF91466E56E008A4399 /* ComPusherChannelProxy.m */; };
 		3EBB8C021466E56E008A4399 /* ComPusherModuleAssets.h in Headers */ = {isa = PBXBuildFile; fileRef = 3EBB8BFC1466E56E008A4399 /* ComPusherModuleAssets.h */; };
@@ -108,6 +110,8 @@
 		24DD6D1B1134B66800162E58 /* titanium.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = titanium.xcconfig; sourceTree = "<group>"; };
 		3E59A88315F7B99B00035329 /* ComPusherChannelMembersProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComPusherChannelMembersProxy.h; path = Classes/ComPusherChannelMembersProxy.h; sourceTree = "<group>"; };
 		3E59A88415F7B99B00035329 /* ComPusherChannelMembersProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ComPusherChannelMembersProxy.m; path = Classes/ComPusherChannelMembersProxy.m; sourceTree = "<group>"; };
+		3E908EA716B05C2F00858D4A /* Reachability.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Reachability.h; sourceTree = "<group>"; };
+		3E908EA816B05C2F00858D4A /* Reachability.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Reachability.m; sourceTree = "<group>"; };
 		3EBB8BF81466E56E008A4399 /* ComPusherChannelProxy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComPusherChannelProxy.h; path = Classes/ComPusherChannelProxy.h; sourceTree = "<group>"; };
 		3EBB8BF91466E56E008A4399 /* ComPusherChannelProxy.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = ComPusherChannelProxy.m; path = Classes/ComPusherChannelProxy.m; sourceTree = "<group>"; };
 		3EBB8BFC1466E56E008A4399 /* ComPusherModuleAssets.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ComPusherModuleAssets.h; path = Classes/ComPusherModuleAssets.h; sourceTree = "<group>"; };
@@ -234,6 +238,7 @@
 		32C88DFF0371C24200C91783 /* Other Sources */ = {
 			isa = PBXGroup;
 			children = (
+				3E908EA616B05C2F00858D4A /* Reachability */,
 				3EF8D82815FAA8B7005FCB93 /* SocketRocket */,
 				3EF8D80B15FAA859005FCB93 /* TouchJSON */,
 				3EF8D7BE15FAA84E005FCB93 /* libPusher */,
@@ -241,6 +246,16 @@
 				24DD6D1B1134B66800162E58 /* titanium.xcconfig */,
 			);
 			name = "Other Sources";
+			sourceTree = "<group>";
+		};
+		3E908EA616B05C2F00858D4A /* Reachability */ = {
+			isa = PBXGroup;
+			children = (
+				3E908EA716B05C2F00858D4A /* Reachability.h */,
+				3E908EA816B05C2F00858D4A /* Reachability.m */,
+			);
+			name = Reachability;
+			path = libPusher/Pods/Reachability;
 			sourceTree = "<group>";
 		};
 		3EF8D7BE15FAA84E005FCB93 /* libPusher */ = {
@@ -386,6 +401,7 @@
 				3EF8D83215FAA8C0005FCB93 /* NSData+SRB64Additions.h in Headers */,
 				3EF8D83415FAA8C0005FCB93 /* SocketRocket-Prefix.pch in Headers */,
 				3EF8D83515FAA8C0005FCB93 /* SRWebSocket.h in Headers */,
+				3E908EAB16B05C2F00858D4A /* Reachability.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,6 +503,7 @@
 				3EF8D83015FAA8C0005FCB93 /* base64.c in Sources */,
 				3EF8D83315FAA8C0005FCB93 /* NSData+SRB64Additions.m in Sources */,
 				3EF8D83615FAA8C0005FCB93 /* SRWebSocket.m in Sources */,
+				3E908EAC16B05C2F00858D4A /* Reachability.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

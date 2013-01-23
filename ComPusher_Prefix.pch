@@ -2,3 +2,8 @@
 #ifdef __OBJC__
     #import <Foundation/Foundation.h>
 #endif
+
+#define kReachabilityChangedNotification RFkReachabilityChangedNotification
+#define Reachability RFReachability
+#define reachabilityFlags RFreachabilityFlags
+#define TMReachabilityCallback RFTMReachabilityCallback

@@ -1,3 +1,9 @@
+- 2013-01-23 Ruben Fonseca <fonseka@gmail.com>
+
+    * version 1.8 released
+
+    * fixed compiling problems with Titanium SDK 3.x
+
 - 2012-12-01 Ruben Fonseca <fonseka@gmail.com>
 
     * version 1.7 released
